@@ -1,7 +1,10 @@
 import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Metadata } from "next";
+import { Providers } from "@/components/common/Providers"; // wrapper for redux provider & persist gate
 import "./globals.css";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,16 +25,20 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+export default function RootLayout({ children }: RootLayoutProps  ) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          <div className="min-h-screen bg-slate-50">
+            <Header />
+            <main className="container mx-auto p-4">{children}</main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );
 }
-
-export default RootLayout;
