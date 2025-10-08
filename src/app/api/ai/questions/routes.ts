@@ -1,6 +1,6 @@
 // app/api/ai/questions/route.ts
 import { NextResponse } from "next/server";
-import { generateQuestions } from "@/server/lib/ai";
+import { generateQuestions } from "@/src/lib/ai";
 
 export async function GET() {
   try {

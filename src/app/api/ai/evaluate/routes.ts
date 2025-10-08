@@ -1,6 +1,6 @@
 // app/api/ai/evaluate/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { evaluateAnswer } from "@/server/lib/ai";
+import { evaluateAnswer } from "@/src/lib/ai";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
