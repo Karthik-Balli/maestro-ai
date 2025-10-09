@@ -25,18 +25,18 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps  ) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <div className="min-h-screen bg-slate-50">
-            <Header />
-            <main className="container mx-auto p-4">{children}</main>
-            <Footer />
-          </div>
+            <div className="min-h-screen bg-slate-50">
+              <Header />
+              <main className="container mx-auto p-4">{children}</main>
+              <Footer />
+            </div>
         </Providers>
       </body>
     </html>

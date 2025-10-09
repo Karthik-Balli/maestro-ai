@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 
@@ -13,38 +14,18 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-    if (!email || !password) {
-      setError("Please fill all fields.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const res = await axios.post("/api/auth/login", { email, password });
-      const data = res.data;
-
-      if (data.success) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        // Navigate to role-based dashboard
-        if (data.user.role === "interviewer") {
-          router.push("/dashboard/interviewer");
-        } else {
-          router.push("/dashboard/interviewee");
-        }
-      } else {
-        setError(data.error || "Login failed");
-      }
-    } catch (err: any) {
-      console.error(err);
-      setError("Something went wrong during login.");
-    } finally {
-      setLoading(false);
+    if (res?.error) {
+      setError(res.error);
+    } else {
+      router.push("/dashboard");
     }
   };
 
@@ -56,7 +37,7 @@ export default function LoginPage() {
         </h2>
         <p className="text-center text-gray-500">Login to your account</p>
 
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -118,12 +99,12 @@ export default function LoginPage() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <button 
-            type="submit"
-            className="w-full py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-70"
-            onClick={() => router.push("/dashboard/interviewee")}
+        <button
+          type="submit"
+          className="w-full py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-70"
+          onClick={() => router.push("/dashboard/interviewee")}
         >
-            Continue as Guest Interviewee
+          Continue as Guest Interviewee
         </button>
 
         <p className="text-center text-gray-500 text-sm">

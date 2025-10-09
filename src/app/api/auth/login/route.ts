@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
 
-    // 🧠 Basic validation
     if (!email || !password) {
       return NextResponse.json(
         { success: false, error: "Email and password are required" },
@@ -17,8 +16,8 @@ export async function POST(req: NextRequest) {
     }
 
     await connectDB();
-
     const user = await User.findOne({ email: email.toLowerCase() });
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "No account found with this email" },
@@ -34,7 +33,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Generate JWT token
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET || "default_secret",

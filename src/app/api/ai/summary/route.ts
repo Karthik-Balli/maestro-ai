@@ -1,6 +1,6 @@
 // app/api/ai/summary/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { generateSummary } from "@/server/lib/ai";
+import { generateSummary } from "@/src/lib/ai";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
