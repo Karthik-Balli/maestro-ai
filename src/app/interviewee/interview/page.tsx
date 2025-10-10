@@ -19,9 +19,8 @@ import { useRouter } from "next/navigation";
 export default function InterviewSessionPage() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { questions, currentIndex, responses, durationPerQuestion, selectedStack } =
-    useSelector((s: RootState) => s.interview);
-    dispatch(setDuration(45)); // Example to set duration to 45 seconds
+  const { questions, currentIndex, responses, durationPerQuestion, selectedStack } = useSelector((s: RootState) => s.interview);
+  dispatch(setDuration(45)); // Example to set duration to 45 seconds
 
   // ⚡️ Load questions if not available
   useEffect(() => {
@@ -51,7 +50,8 @@ export default function InterviewSessionPage() {
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, questions, selectedStack]);
+
 
   // 🛡️ Guard clause for missing questions or bad index
   const isValidIndex =
@@ -64,16 +64,6 @@ export default function InterviewSessionPage() {
       router.push("/interviewee/ready");
     }
   }, [questions, router]);
-
-  useEffect(() => {
-  console.log({
-    questions,
-    currentIndex,
-    currentQuestion: questions?.[currentIndex],
-    responses,
-  });
-}, [questions, currentIndex, responses]);
-
 
   const handleAnswerChange = (text: string) => {
     if (!currentQuestion) return;

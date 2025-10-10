@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { getSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
@@ -21,11 +22,13 @@ export default function LoginPage() {
       email,
       password,
     });
-
-    if (res?.error) {
-      setError(res.error);
-    } else {
-      router.push("/dashboard");
+    if (res?.error) setError(res.error);
+    else {
+      // fetch session to get role
+      const session = await getSession();
+      const role = session?.user?.role;
+      if (role === "interviewer") router.push("/interviewer/dashboard");
+      else router.push("/interviewee/onboarding");
     }
   };
 

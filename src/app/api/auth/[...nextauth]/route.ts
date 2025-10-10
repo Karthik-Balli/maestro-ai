@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/db";
 import { User } from "@/models/User";
@@ -19,7 +19,7 @@ declare module "next-auth" {
   }
 }
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -64,6 +64,8 @@ const handler = NextAuth({
       return session;
     },
   },
-});
+};
 
+// ✅ Export the NextAuth handler for API route
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

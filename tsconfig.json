@@ -30,7 +30,7 @@
       "@/utils/*": ["./src/utils/*"],
       "@/types/*": ["./src/types/*"],
       "@/hooks/*": ["./src/hooks/*"],
-      "@/store/*": ["./src/app/store/*"],
+      "@/store/*": ["./src/store/*"],
       "@/models/*": ["./src/models/*"]
     }
   },
